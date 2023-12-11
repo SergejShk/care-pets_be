@@ -25,3 +25,13 @@ export interface IRegisteredUser {
   city: string;
   phone: string;
 }
+
+export interface IUser extends IRegisteredUser {
+  birthday?: string;
+  photo?: string;
+}
+
+export interface ILogInBody {
+  email: string;
+  password: string;
+}

@@ -9,3 +9,10 @@ export const signUpSchema = z
     phone: z.string().min(5).max(20),
   })
   .strict();
+
+export const loginSchema = z
+  .object({
+    email: z.string().email().min(5),
+    password: z.string().min(7).max(32),
+  })
+  .strict();

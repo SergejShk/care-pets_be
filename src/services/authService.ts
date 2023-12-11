@@ -3,9 +3,17 @@ import bcrypt from "bcrypt";
 
 import { UsersDb } from "../database/usersDb";
 
-import { DuplicateUserError } from "../errors/customErrors";
+import {
+  DuplicateUserError,
+  InvalidParameterError,
+} from "../errors/customErrors";
 
-import { ISignUpBody, ITokenPayload, Token } from "../interface/auth";
+import {
+  ILogInBody,
+  ISignUpBody,
+  ITokenPayload,
+  Token,
+} from "../interface/auth";
 
 export class AuthService {
   private usersDb: UsersDb;
@@ -27,7 +35,7 @@ export class AuthService {
     });
   };
 
-  signupUser = async (body: ISignUpBody) => {
+  signUp = async (body: ISignUpBody) => {
     const { email } = body;
 
     const user = await this.usersDb.getUserByEmail(email);
@@ -59,5 +67,28 @@ export class AuthService {
     const refreshToken = this.getToken(payloadToken, Token.Refresh);
 
     return { ...newUser, accessToken, refreshToken };
+  };
+
+  logIn = async (body: ILogInBody) => {
+    const { email, password: reqPassword } = body;
+
+    const [user] = await this.usersDb.getUserByEmail(email);
+
+    if (!user || !(await bcrypt.compare(reqPassword, user.password))) {
+      throw new InvalidParameterError("Email or password is wrong");
+    }
+
+    const { password, ...response } = user;
+
+    const payloadToken = {
+      id: response.id,
+      email: response.email,
+      name: response.name,
+    };
+
+    const accessToken = this.getToken(payloadToken, Token.Access);
+    const refreshToken = this.getToken(payloadToken, Token.Refresh);
+
+    return { ...response, accessToken, refreshToken };
   };
 }
