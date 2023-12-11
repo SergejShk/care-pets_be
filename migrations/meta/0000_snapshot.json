@@ -1,5 +1,5 @@
 {
-  "id": "93ad69a5-e8c1-4a6a-91d4-4fbcea5c6408",
+  "id": "3807be11-de21-4a49-a87a-eccfb86df7d2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -10,7 +10,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "varchar",
           "primaryKey": true,
           "notNull": true
         },
@@ -32,8 +32,20 @@
           "primaryKey": false,
           "notNull": true
         },
+        "city": {
+          "name": "city",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
         "phone": {
           "name": "phone",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "birthday": {
+          "name": "birthday",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false

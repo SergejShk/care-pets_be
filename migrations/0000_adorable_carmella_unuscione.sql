@@ -1,8 +1,10 @@
 CREATE TABLE IF NOT EXISTS "users" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" varchar PRIMARY KEY NOT NULL,
 	"email" varchar NOT NULL,
 	"password" varchar NOT NULL,
 	"name" varchar NOT NULL,
-	"phone" varchar,
+	"city" varchar NOT NULL,
+	"phone" varchar NOT NULL,
+	"birthday" varchar,
 	"photo" varchar
 );

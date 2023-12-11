@@ -1,14 +1,14 @@
-import { pgTable, serial, varchar } from "drizzle-orm/pg-core";
+import { pgTable, varchar } from "drizzle-orm/pg-core";
 import { type InferSelectModel, type InferInsertModel } from "drizzle-orm";
 
 const users = pgTable("users", {
-  userId: serial("id").primaryKey().notNull(),
+  id: varchar("id").primaryKey().notNull(),
   email: varchar("email").notNull(),
   password: varchar("password").notNull(),
   name: varchar("name").notNull(),
-  city: varchar("name").notNull(),
+  city: varchar("city").notNull(),
   phone: varchar("phone").notNull(),
-  birthday: varchar("phone"),
+  birthday: varchar("birthday"),
   photo: varchar("photo"),
 });
 

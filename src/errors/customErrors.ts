@@ -16,4 +16,24 @@ class CustomError extends Error {
   }
 }
 
-export { IError, CustomError };
+class InvalidParameterError extends CustomError {
+  status: number;
+
+  constructor(message: string) {
+    super(message);
+    this.message = message;
+    this.status = 422;
+  }
+}
+
+class DuplicateUserError extends CustomError {
+  status: number;
+
+  constructor(message: string) {
+    super(message);
+    this.message = message;
+    this.status = 409;
+  }
+}
+
+export { IError, CustomError, InvalidParameterError, DuplicateUserError };
