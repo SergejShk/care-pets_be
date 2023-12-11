@@ -22,7 +22,7 @@ export default class App {
           (req as any).rawBody = buf.toString();
         },
         limit: "10mb",
-      })
+      }),
     );
 
     this.app.use(
@@ -33,7 +33,7 @@ export default class App {
         optionsSuccessStatus: 204,
         exposedHeaders: "X-Total-Count",
         credentials: true,
-      })
+      }),
     );
   };
 

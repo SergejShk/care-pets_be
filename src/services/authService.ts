@@ -3,17 +3,9 @@ import bcrypt from "bcrypt";
 
 import { UsersDb } from "../database/usersDb";
 
-import {
-  DuplicateUserError,
-  InvalidParameterError,
-} from "../errors/customErrors";
+import { DuplicateUserError, InvalidParameterError } from "../errors/customErrors";
 
-import {
-  ILogInBody,
-  ISignUpBody,
-  ITokenPayload,
-  Token,
-} from "../interface/auth";
+import { ILogInBody, ISignUpBody, ITokenPayload, Token } from "../interface/auth";
 
 export class AuthService {
   private usersDb: UsersDb;

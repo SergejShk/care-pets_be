@@ -13,6 +13,5 @@ export class UsersDb {
     return this.db.insert(users).values(newUser).returning();
   };
 
-  public getUserById = async (id: string) =>
-    this.db.select().from(users).where(eq(users.id, id));
+  public getUserById = async (id: string) => this.db.select().from(users).where(eq(users.id, id));
 }

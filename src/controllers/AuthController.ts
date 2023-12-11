@@ -29,10 +29,7 @@ export class AuthController extends Controller {
     this.router.post("/login", this.link({ route: this.logIn }));
   }
 
-  private signUp: RequestHandler<{}, BaseResponse<IRegisteredUser>> = async (
-    req,
-    res
-  ) => {
+  private signUp: RequestHandler<{}, BaseResponse<IRegisteredUser>> = async (req, res) => {
     const validatedBody = signUpSchema.safeParse(req.body);
     const id = nanoid();
 
@@ -40,19 +37,17 @@ export class AuthController extends Controller {
       throw new InvalidParameterError("Bad request");
     }
 
-    const { accessToken, refreshToken, ...newUser } =
-      await this.authService.signUp({ ...req.body, id });
+    const { accessToken, refreshToken, ...newUser } = await this.authService.signUp({
+      ...req.body,
+      id,
+    });
 
     this.setCookies({ res, accessToken, refreshToken });
 
     return res.status(201).json(okResponse(newUser));
   };
 
-  private logIn: RequestHandler<{}, BaseResponse<IUser>> = async (
-    req,
-    res,
-    next
-  ) => {
+  private logIn: RequestHandler<{}, BaseResponse<IUser>> = async (req, res, next) => {
     try {
       const validatedBody = loginSchema.safeParse(req.body);
 
@@ -60,8 +55,7 @@ export class AuthController extends Controller {
         throw new InvalidParameterError("Bad request");
       }
 
-      const { accessToken, refreshToken, ...user } =
-        await this.authService.logIn(req.body);
+      const { accessToken, refreshToken, ...user } = await this.authService.logIn(req.body);
 
       this.setCookies({ res, accessToken, refreshToken });
 
