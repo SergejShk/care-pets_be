@@ -12,13 +12,16 @@ import { InvalidParameterError } from "../errors/customErrors";
 import { BaseResponse, okResponse } from "../api/baseResponses";
 
 import { IRegisteredUser, IUser } from "@/interface/auth";
+import { AuthMiddlewares } from "@/middlewares/authMiddlewares";
 
 export class AuthController extends Controller {
   authService: AuthService;
+  authMiddlewares: AuthMiddlewares;
 
-  constructor(authService: AuthService) {
+  constructor(authService: AuthService, authMiddlewares: AuthMiddlewares) {
     super("/auth");
 
+    this.authMiddlewares = authMiddlewares;
     this.authService = authService;
 
     this.initializeRoutes();
@@ -27,6 +30,7 @@ export class AuthController extends Controller {
   private initializeRoutes() {
     this.router.post("/sign-up", this.link({ route: this.signUp }));
     this.router.post("/login", this.link({ route: this.logIn }));
+    this.router.get("/me", this.authMiddlewares.isAuthorized, this.link({ route: this.getMe }));
   }
 
   private signUp: RequestHandler<{}, BaseResponse<IRegisteredUser>> = async (req, res) => {
@@ -60,6 +64,17 @@ export class AuthController extends Controller {
       this.setCookies({ res, accessToken, refreshToken });
 
       return res.status(200).json(okResponse(user as IUser));
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  private getMe: RequestHandler<{}, BaseResponse<IUser>> = async (req, res, next) => {
+    try {
+      //@ts-ignore
+      const user = req.user as IUser;
+
+      return res.status(200).json(okResponse(user));
     } catch (e) {
       next(e);
     }

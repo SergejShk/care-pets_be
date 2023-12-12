@@ -36,4 +36,31 @@ class DuplicateUserError extends CustomError {
   }
 }
 
-export { IError, CustomError, InvalidParameterError, DuplicateUserError };
+class UnauthorizedError extends CustomError {
+  status: number;
+
+  constructor(message: string) {
+    super(message);
+    this.message = message;
+    this.status = 401;
+  }
+}
+
+class RefreshTokenError extends CustomError {
+  status: number;
+
+  constructor(message: string) {
+    super(message);
+    this.message = message;
+    this.status = 403;
+  }
+}
+
+export {
+  IError,
+  CustomError,
+  InvalidParameterError,
+  DuplicateUserError,
+  UnauthorizedError,
+  RefreshTokenError,
+};

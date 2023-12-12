@@ -9,6 +9,8 @@ import { UsersDb } from "./database/usersDb";
 
 import { AuthService } from "./services/authService";
 
+import { AuthMiddlewares } from "./middlewares/authMiddlewares";
+
 import { AuthController } from "./controllers/AuthController";
 import { UsersController } from "./controllers/UsersController";
 
@@ -38,7 +40,11 @@ const serverStart = async () => {
     // services
     const authService = new AuthService(usersDb);
 
-    const authController = new AuthController(authService);
+    // middlewares
+    const authMiddlewares = new AuthMiddlewares(usersDb);
+
+    //controllers
+    const authController = new AuthController(authService, authMiddlewares);
     const usersController = new UsersController();
 
     const app = new App(PORT, [authController, usersController]);

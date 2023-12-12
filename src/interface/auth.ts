@@ -9,6 +9,10 @@ export interface ITokenPayload {
   name: string;
 }
 
+export interface JwtData extends ITokenPayload {
+  tokenType: Token;
+}
+
 export interface ISignUpBody {
   id: string;
   email: string;
