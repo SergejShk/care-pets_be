@@ -32,6 +32,11 @@ export class AuthController extends Controller {
     this.router.post("/login", this.link({ route: this.logIn }));
     this.router.get("/me", this.authMiddlewares.isAuthorized, this.link({ route: this.getMe }));
     this.router.get("/refresh", this.link({ route: this.refreshAccessToken }));
+    this.router.get(
+      "/logout",
+      this.authMiddlewares.isAuthorized,
+      this.link({ route: this.logOut }),
+    );
   }
 
   private signUp: RequestHandler<{}, BaseResponse<IRegisteredUser>> = async (req, res) => {
@@ -96,6 +101,16 @@ export class AuthController extends Controller {
     }
   };
 
+  private logOut: RequestHandler<{}, BaseResponse<{}>> = async (req, res, next) => {
+    try {
+      const response = this.clearCookies(res);
+
+      return response.status(200).json(okResponse());
+    } catch (e) {
+      next(e);
+    }
+  };
+
   private setCookies = ({
     res,
     accessToken,
@@ -126,6 +141,19 @@ export class AuthController extends Controller {
       ...options,
       expires: expireRefreshToken,
     });
+
+    return res;
+  };
+
+  private clearCookies = (res: Response): Response => {
+    const options: CookieOptions = {
+      secure: true,
+      httpOnly: false,
+      sameSite: "none",
+    };
+
+    res.clearCookie("accessToken", options);
+    res.clearCookie("refreshToken", options);
 
     return res;
   };
