@@ -3,6 +3,11 @@ export enum Token {
   Refresh = "refresh",
 }
 
+export interface GeneratedAuthTokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
 export interface ITokenPayload {
   id: string;
   email: string;

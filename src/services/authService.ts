@@ -3,9 +3,20 @@ import bcrypt from "bcrypt";
 
 import { UsersDb } from "../database/usersDb";
 
-import { DuplicateUserError, InvalidParameterError } from "../errors/customErrors";
+import {
+  DuplicateUserError,
+  InvalidParameterError,
+  RefreshTokenError,
+} from "../errors/customErrors";
 
-import { ILogInBody, ISignUpBody, ITokenPayload, Token } from "../interface/auth";
+import {
+  GeneratedAuthTokens,
+  ILogInBody,
+  ISignUpBody,
+  ITokenPayload,
+  JwtData,
+  Token,
+} from "../interface/auth";
 
 export class AuthService {
   private usersDb: UsersDb;
@@ -82,5 +93,29 @@ export class AuthService {
     const refreshToken = this.getToken(payloadToken, Token.Refresh);
 
     return { ...response, accessToken, refreshToken };
+  };
+
+  refreshTokens = async (token: string): Promise<GeneratedAuthTokens> => {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET || "") as JwtData;
+
+    if (decodedToken.tokenType !== Token.Refresh)
+      throw new RefreshTokenError("Refresh token error");
+
+    const [user] = await this.usersDb.getUserById(decodedToken.id);
+
+    if (!user) {
+      throw new RefreshTokenError(`Can't find user by refresh token`);
+    }
+
+    const payloadToken = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+    };
+
+    const accessToken = this.getToken(payloadToken, Token.Access);
+    const refreshToken = this.getToken(payloadToken, Token.Refresh);
+
+    return { accessToken, refreshToken };
   };
 }

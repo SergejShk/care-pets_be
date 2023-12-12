@@ -7,7 +7,7 @@ import { loginSchema, signUpSchema } from "../dto/users";
 
 import { AuthService } from "../services/authService";
 
-import { InvalidParameterError } from "../errors/customErrors";
+import { InvalidParameterError, RefreshTokenError } from "../errors/customErrors";
 
 import { BaseResponse, okResponse } from "../api/baseResponses";
 
@@ -31,6 +31,7 @@ export class AuthController extends Controller {
     this.router.post("/sign-up", this.link({ route: this.signUp }));
     this.router.post("/login", this.link({ route: this.logIn }));
     this.router.get("/me", this.authMiddlewares.isAuthorized, this.link({ route: this.getMe }));
+    this.router.get("/refresh", this.link({ route: this.refreshAccessToken }));
   }
 
   private signUp: RequestHandler<{}, BaseResponse<IRegisteredUser>> = async (req, res) => {
@@ -75,6 +76,21 @@ export class AuthController extends Controller {
       const user = req.user as IUser;
 
       return res.status(200).json(okResponse(user));
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  private refreshAccessToken: RequestHandler<{}, BaseResponse<{}>> = async (req, res, next) => {
+    try {
+      const reqRefreshToken = req.cookies["refreshToken"];
+      if (!reqRefreshToken) throw new RefreshTokenError("Can't find refresh token");
+
+      const { accessToken, refreshToken } = await this.authService.refreshTokens(reqRefreshToken);
+
+      this.setCookies({ res, accessToken, refreshToken });
+
+      return res.status(201).json(okResponse({ accessToken, refreshToken }));
     } catch (e) {
       next(e);
     }
