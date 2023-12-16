@@ -9,7 +9,7 @@ export interface GeneratedAuthTokens {
 }
 
 export interface ITokenPayload {
-  id: string;
+  id: number;
   email: string;
   name: string;
 }
@@ -19,7 +19,6 @@ export interface JwtData extends ITokenPayload {
 }
 
 export interface ISignUpBody {
-  id: string;
   email: string;
   password: string;
   name: string;
@@ -28,7 +27,7 @@ export interface ISignUpBody {
 }
 
 export interface IRegisteredUser {
-  id: string;
+  id: number;
   email: string;
   name: string;
   city: string;
@@ -36,11 +35,20 @@ export interface IRegisteredUser {
 }
 
 export interface IUser extends IRegisteredUser {
-  birthday?: string;
+  birthday?: Date;
   photo?: string;
 }
 
 export interface ILogInBody {
   email: string;
   password: string;
+}
+
+export interface IUserUpdate {
+  email: string;
+  name: string;
+  city: string;
+  phone: string;
+  birthday?: Date;
+  photo?: string;
 }

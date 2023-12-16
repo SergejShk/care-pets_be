@@ -1,5 +1,5 @@
 {
-  "id": "3807be11-de21-4a49-a87a-eccfb86df7d2",
+  "id": "8edfcf0c-0837-446d-b9a3-7f7acc4ad124",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -10,7 +10,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
@@ -46,7 +46,7 @@
         },
         "birthday": {
           "name": "birthday",
-          "type": "varchar",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },

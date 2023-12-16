@@ -13,6 +13,7 @@ import { AuthMiddlewares } from "./middlewares/authMiddlewares";
 
 import { AuthController } from "./controllers/AuthController";
 import { UsersController } from "./controllers/UsersController";
+import { UsersService } from "./services/usersService";
 
 dotenv.config();
 
@@ -39,13 +40,14 @@ const serverStart = async () => {
 
     // services
     const authService = new AuthService(usersDb);
+    const usersService = new UsersService(usersDb);
 
     // middlewares
     const authMiddlewares = new AuthMiddlewares(usersDb);
 
     //controllers
     const authController = new AuthController(authService, authMiddlewares);
-    const usersController = new UsersController();
+    const usersController = new UsersController(usersService, authMiddlewares);
 
     const app = new App(PORT, [authController, usersController]);
 

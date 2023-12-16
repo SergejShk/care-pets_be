@@ -1,5 +1,4 @@
 import { RequestHandler, CookieOptions, Response } from "express";
-import { nanoid } from "nanoid";
 
 import { Controller } from "./Controller";
 
@@ -7,12 +6,13 @@ import { loginSchema, signUpSchema } from "../dto/users";
 
 import { AuthService } from "../services/authService";
 
+import { AuthMiddlewares } from "../middlewares/authMiddlewares";
+
 import { InvalidParameterError, RefreshTokenError } from "../errors/customErrors";
 
 import { BaseResponse, okResponse } from "../api/baseResponses";
 
-import { IRegisteredUser, IUser } from "@/interface/auth";
-import { AuthMiddlewares } from "@/middlewares/authMiddlewares";
+import { IRegisteredUser, IUser } from "../interface/auth";
 
 export class AuthController extends Controller {
   authService: AuthService;
@@ -41,16 +41,12 @@ export class AuthController extends Controller {
 
   private signUp: RequestHandler<{}, BaseResponse<IRegisteredUser>> = async (req, res) => {
     const validatedBody = signUpSchema.safeParse(req.body);
-    const id = nanoid();
 
     if (!validatedBody.success) {
       throw new InvalidParameterError("Bad request");
     }
 
-    const { accessToken, refreshToken, ...newUser } = await this.authService.signUp({
-      ...req.body,
-      id,
-    });
+    const { accessToken, refreshToken, ...newUser } = await this.authService.signUp(req.body);
 
     this.setCookies({ res, accessToken, refreshToken });
 
