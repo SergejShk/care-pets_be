@@ -1,3 +1,5 @@
+import { IPhoto } from "./common";
+
 export enum Token {
   Access = "access",
   Refresh = "refresh",
@@ -36,7 +38,7 @@ export interface IRegisteredUser {
 
 export interface IUser extends IRegisteredUser {
   birthday?: Date;
-  photo?: string;
+  photo?: IPhoto;
 }
 
 export interface ILogInBody {
@@ -50,5 +52,5 @@ export interface IUserUpdate {
   city: string;
   phone: string;
   birthday?: Date;
-  photo?: string;
+  photo?: IPhoto;
 }

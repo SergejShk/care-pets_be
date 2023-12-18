@@ -1,5 +1,7 @@
-import { pgTable, serial, varchar, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, varchar, timestamp, json } from "drizzle-orm/pg-core";
 import { type InferSelectModel, type InferInsertModel } from "drizzle-orm";
+
+import { IPhoto } from "@/interface/common";
 
 const users = pgTable("users", {
   id: serial("id").primaryKey().notNull(),
@@ -9,7 +11,7 @@ const users = pgTable("users", {
   city: varchar("city").notNull(),
   phone: varchar("phone").notNull(),
   birthday: timestamp("birthday"),
-  photo: varchar("photo"),
+  photo: json("photo").$type<IPhoto>(),
 });
 
 export default users;

@@ -3,9 +3,20 @@ CREATE TABLE IF NOT EXISTS "pets" (
 	"name" varchar NOT NULL,
 	"birthday" timestamp NOT NULL,
 	"breed" varchar NOT NULL,
-	"photo" varchar,
+	"photo" json,
 	"comments" varchar NOT NULL,
 	"user_id" integer NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "users" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"email" varchar NOT NULL,
+	"password" varchar NOT NULL,
+	"name" varchar NOT NULL,
+	"city" varchar NOT NULL,
+	"phone" varchar NOT NULL,
+	"birthday" timestamp,
+	"photo" json
 );
 --> statement-breakpoint
 DO $$ BEGIN
