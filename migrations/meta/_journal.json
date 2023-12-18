@@ -8,6 +8,13 @@
       "when": 1702687106301,
       "tag": "0000_cold_firestar",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1702917094798,
+      "tag": "0001_watery_lord_hawal",
+      "breakpoints": true
     }
   ]
 }
