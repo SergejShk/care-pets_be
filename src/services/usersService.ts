@@ -10,8 +10,11 @@ export class UsersService {
   }
 
   updateUser = async (id: number, user: IUserUpdate) => {
+    const birthday = user.birthday ? new Date(user.birthday) : undefined;
+
     const [updatedUser] = await this.usersDb.updateUser(id, {
       ...user,
+      birthday,
     });
 
     const { password, ...responseUser } = updatedUser;
