@@ -8,12 +8,14 @@ import App from "./app";
 import { UsersDb } from "./database/usersDb";
 
 import { AuthService } from "./services/authService";
+import { UsersService } from "./services/usersService";
+import { FilesService } from "./services/filesService";
 
 import { AuthMiddlewares } from "./middlewares/authMiddlewares";
 
 import { AuthController } from "./controllers/AuthController";
 import { UsersController } from "./controllers/UsersController";
-import { UsersService } from "./services/usersService";
+import { FilesController } from "./controllers/FilesController";
 
 dotenv.config();
 
@@ -41,6 +43,7 @@ const serverStart = async () => {
     // services
     const authService = new AuthService(usersDb);
     const usersService = new UsersService(usersDb);
+    const filesService = new FilesService();
 
     // middlewares
     const authMiddlewares = new AuthMiddlewares(usersDb);
@@ -48,8 +51,9 @@ const serverStart = async () => {
     //controllers
     const authController = new AuthController(authService, authMiddlewares);
     const usersController = new UsersController(usersService, authMiddlewares);
+    const filesController = new FilesController(filesService, authMiddlewares);
 
-    const app = new App(PORT, [authController, usersController]);
+    const app = new App(PORT, [authController, usersController, filesController]);
 
     app.listen();
   } catch (error: any) {
