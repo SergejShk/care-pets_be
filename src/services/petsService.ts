@@ -10,8 +10,10 @@ export class PetsService {
   }
 
   createPet = async (id: number, pet: IPet) => {
+    const birthday = new Date(pet.birthday);
     const newPet = await this.petsDb.createPet({
       ...pet,
+      birthday,
       userId: id,
     });
 

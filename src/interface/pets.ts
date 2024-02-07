@@ -5,6 +5,6 @@ export interface IPet {
   name: string;
   birthday: Date;
   breed: string;
-  photo?: IPhoto;
+  photo?: IPhoto | null;
   comments: string;
 }
