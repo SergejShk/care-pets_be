@@ -1,4 +1,4 @@
-import express, { Application } from "express";
+import express, { Application, Request, Response, NextFunction } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -44,6 +44,11 @@ export default class App {
   };
 
   public listen = () => {
+    this.app.use(async (err: Error, req: Request, res: Response, next: NextFunction) => {
+      res.status((err as any)?.status || 500).send(err?.message || "Bad request");
+      return next(err);
+    });
+    // starting app
     this.app.listen(this.port, async () => {
       console.log(`The server is running on port ${this.port}`);
     });
