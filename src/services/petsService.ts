@@ -21,4 +21,10 @@ export class PetsService {
 
     return createdPet;
   };
+
+  getUserPets = async () => {
+    const userPets = await this.petsDb.getUserPets();
+
+    return userPets;
+  };
 }

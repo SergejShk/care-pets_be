@@ -11,4 +11,6 @@ export class PetsDb {
       .values(newPet)
       .returning()
       .then((res) => res[0]);
+
+  public getUserPets = async () => this.db.select().from(pets);
 }
